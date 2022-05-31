@@ -9,16 +9,17 @@ Artifact Description for "vectorizing sparse matrix codes using partially stride
     git clone https://github.com/cheshmi/\\mining-bench.git
     cd mining-bench
 ```
- * The singularity image should be pulled to the same directory that the code is cloned using: 
+
+* The singularity image should be pulled to the same directory that the code is cloned using: 
  ```
-    singularity pull <link is provided in the AD>}.   
+    singularity pull <link is provided in the AD>   
  ``` 
-    You can test the image by running the following command from the current directory:
+You can test the image by running the following command from the current directory:
 ```
 singularity exec sparse.sif /source/codelet_mining/build/demo/spmv_demo --matrix ./LFAT5.mtx --numerical_operation SPMV --storage_format CSR
 
 ``` 
-   The output is set of comma seprated values such matrix specification and execution time of different tools.
+ The output is set of comma seprated values such matrix specification and execution time of different tools.
     
     
   * The datasets should be downloaded by calling:
