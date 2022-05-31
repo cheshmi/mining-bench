@@ -22,32 +22,32 @@ singularity exec sparse.sif /source/codelet_mining/build/demo/spmv_demo --matrix
  The output is set of comma seprated values such matrix specification and execution time of different tools.
     
     
-  * The datasets should be downloaded by calling:
+* The datasets should be downloaded by calling:
 ```    
     python ssgetpy/dl_matrices.py
     python ssgetpy/dl_SPD_matrices.py
 ```    
-    Matrices are downloaded into the _mm_ and _SPD_ directories in the current directory (This might take several hours and requires internet connection).
+Matrices are downloaded into the _mm_ and _SPD_ directories in the current directory (This might take several hours and requires internet connection).
 
-    * The SpMV experiment can be executed by emitting:
-    ```
+* The SpMV experiment can be executed by emitting:
+```
     bash run_spmv.sh
-    ```
-    For running on compute node:
-    ```
-    sbatch bash run_spmv.sh
-    ```
-    You might need to update scripts with new absolute paths to the dataset and the image file.
+```
+For running on compute node:
+```
+sbatch bash run_spmv.sh
+```
+You might need to update scripts with new absolute paths to the dataset and the image file.
     
 
-    * SpTRSV experiment can be done by running:
-    ```
-    bash run_sptrsv.sh
-    ```
+* SpTRSV experiment can be done by running:
+```
+bash run_sptrsv.sh
+```
     
-    * SpMM experiment can be reproduced by calling:
-    ```
-    bash run_spmm.sh
-    ```
+* SpMM experiment can be reproduced by calling:
+```
+bash run_spmm.sh
+```
     
-    * all results should be stored as CSV files under the _./logs/_ directory.
+* all results should be stored as CSV files under the _./logs/_ directory.
