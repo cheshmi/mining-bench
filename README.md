@@ -50,4 +50,5 @@ bash run_sptrsv.sh
 bash run_spmm.sh
 ```
     
-* all results should be stored as CSV files under the _./logs/_ directory.
+* all results should be stored as CSV files under the _./logs/_ directory. Plots should be 
+created in the current directoy as PDF files. 

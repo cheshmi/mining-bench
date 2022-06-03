@@ -29,7 +29,7 @@
 
 
 
-BINPATH="singularity exec sparse.sif /source/codelet_mining/build/demo"
+BINPATH="singularity exec artifact.sif /source/codelet_mining/build/demo"
 LOGS=./logs 
 SCRIPTPATH=./
 MAT_DIR=./mm
@@ -39,3 +39,6 @@ CURRENT_TIME=$(date +%s)
 
 mkdir $LOGS
 bash $SCRIPTPATH/run_exp.sh "${BINPATH}/spmm_demo" 4 20  "${MAT_DIR}" "${SPD_MAT_DIR}" > $LOGS/spmm_$CURRENT_TIME.csv
+
+
+python3 plot_spmm.py $LOGS/spmm_$CURRENT_TIME.csv
