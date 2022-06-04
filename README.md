@@ -19,7 +19,7 @@ You can test the image by running the following command from the current directo
 singularity exec sparse.sif /source/codelet_mining/build/demo/spmv_demo --matrix ./LFAT5.mtx --numerical_operation SPMV --storage_format CSR
 
 ``` 
- The output is set of comma seprated values such matrix specification and execution time of different tools.
+ The output is set of comma separated values such matrix specification and execution time of different tools. Also, plots will be created as PDF files upon completion of all experiments. 
     
     
 * The datasets should be downloaded by calling:
@@ -51,4 +51,4 @@ bash run_spmm.sh
 ```
     
 * all results should be stored as CSV files under the _./logs/_ directory. Plots should be 
-created in the current directoy as PDF files. 
+created in the current directory as PDF files. 
