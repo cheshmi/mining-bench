@@ -29,16 +29,11 @@
 
 
 
-BINPATH="singularity exec artifact.sif /source/codelet_mining/build/demo"
-LOGS=./logs 
-SCRIPTPATH=./
-MAT_DIR=./mm
-SPD_MAT_DIR=./SPD
-
-CURRENT_TIME=$(date +%s)
+source common.sh
 
 mkdir $LOGS
-bash $SCRIPTPATH/run_exp.sh "${BINPATH}/sptrsv_demo" 2 20  "${MAT_DIR}" "${SPD_MAT_DIR}" > $LOGS/sptrsv_$CURRENT_TIME.csv
+bash run_exp.sh 
 
-python3 plot_sptrsv.py $LOGS/sptrsv_$CURRENT_TIME.csv
-python3 speedup_stacked_sptrsv.py $LOGS/sptrsv_$CURRENT_TIME.csv
+bash "${SCRIPTPATH}"/run_exp.sh "${BINPATH}"/sptrsv_demo   2 "${NUM_THREAD}"  "${MAT_DIR}" "${SPD_MAT_DIR}" > $LOGS/sptrsv_all.csv
+echo "Done SpTRSV"
+

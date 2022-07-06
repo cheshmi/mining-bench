@@ -28,17 +28,25 @@
 # ######################################
 
 
+SW=$1
 
-BINPATH="singularity exec artifact.sif /source/codelet_mining/build/demo"
-LOGS=./logs 
-SCRIPTPATH=./
-MAT_DIR=./mm
-SPD_MAT_DIR=./SPD
 
-CURRENT_TIME=$(date +%s)
+source common.sh
+
+
 
 mkdir $LOGS
-bash $SCRIPTPATH/run_exp.sh "${BINPATH}/spmm_demo" 4 20  "${MAT_DIR}" "${SPD_MAT_DIR}" > $LOGS/spmm_$CURRENT_TIME.csv
+if [ "$SW" ==  0 ]; then
+	echo "running group 0 of SpMM"
+	bash $SCRIPTPATH/run_exp.sh "${BINPATH}/spmm_demo" 4 "${NUM_THREAD}"  "${MAT_DIR}" "${SPD_MAT_DIR}" > $LOGS/spmm_grp0.csv
+fi
 
+if [ "$SW" ==  1 ]; then
+	echo "running group 1 of SpMM"
+	bash $SCRIPTPATH/run_exp.sh "${BINPATH}/spmm_demo" 5 "${NUM_THREAD}"  "${MAT_DIR}" "${SPD_MAT_DIR}" > $LOGS/spmm_grp1.csv
+fi
 
-python3 plot_spmm.py $LOGS/spmm_$CURRENT_TIME.csv
+if [ "$SW" ==  2 ]; then
+	echo "running group 2 of SpMM"
+	bash $SCRIPTPATH/run_exp.sh "${BINPATH}/spmm_demo" 6 "${NUM_THREAD}"  "${MAT_DIR}" "${SPD_MAT_DIR}" > $LOGS/spmm_grp2.csv
+fi

@@ -1,8 +1,30 @@
 # mining-bench
 Artifact Description for "vectorizing sparse matrix codes using partially strided codelets" at SC22.
 
+# Quick Instruction
+* The mining-bench repository should be cloned: 
+```    
+    git clone https://github.com/cheshmi/\\mining-bench.git
+    cd mining-bench
+```
 
-# How to run the artifact
+* Running the script to perform all experiments on server 
+```
+bash run_all.sh 1
+
+```
+
+If you pass 0, you want to run experiments locally.
+The script assumes, `singularity` is loaded and can be used. Otherwise, please modify `common.sh`.
+
+* Plotting
+```
+bash plot_all.sh
+
+```
+
+
+# How to run the artifact step by step
 
 * The mining-bench repository should be cloned: 
 ```    
@@ -47,8 +69,13 @@ bash run_sptrsv.sh
     
 * SpMM experiment can be reproduced by calling:
 ```
-bash run_spmm.sh
+bash run_spmm.sh 0
+bash run_spmm.sh 1
+bash run_spmm.sh 2
 ```
     
 * all results should be stored as CSV files under the _./logs/_ directory. Plots should be 
-created in the current directory as PDF files. 
+created in the current directory as PDF files by calling:
+```
+bash plot_all.sh
+``` 
