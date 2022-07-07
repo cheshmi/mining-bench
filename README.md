@@ -1,10 +1,10 @@
 # mining-bench
-Artifact Description for "vectorizing sparse matrix codes using partially strided codelets" at SC22.
+Artifact Description for "vectorizing sparse matrix codes using partially strided codelets" at SC22. The source code is available at [the codelet mining repository](https://github.com/sympiler/codelet_mining).
 
 # Quick Instruction
 * The mining-bench repository should be cloned: 
 ```    
-    git clone https://github.com/cheshmi/\\mining-bench.git
+    git clone https://github.com/cheshmi/mining-bench.git
     cd mining-bench
 ```
 
@@ -14,7 +14,7 @@ bash run_all.sh 1
 
 ```
 
-If you pass 0, you want to run experiments locally.
+You should pass 0, if you want to run experiments locally.
 The script assumes, `singularity` is loaded and can be used. Otherwise, please modify `common.sh`.
 
 * Plotting
@@ -22,13 +22,15 @@ The script assumes, `singularity` is loaded and can be used. Otherwise, please m
 bash plot_all.sh
 
 ```
+Plots should be generated as PDFs in the current directory. You will need python3 for running the script successfully. 
 
 
-# How to run the artifact step by step
+
+# How to run the artifact using the image step by step
 
 * The mining-bench repository should be cloned: 
 ```    
-    git clone https://github.com/cheshmi/\\mining-bench.git
+    git clone https://github.com/cheshmi/mining-bench.git
     cd mining-bench
 ```
 

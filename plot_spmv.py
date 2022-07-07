@@ -55,18 +55,25 @@ class SegmentedScale(mscale.ScaleBase):
 # that ``matplotlib`` can find it.
 mscale.register_scale(SegmentedScale)
 
+ELL_exit=False
+RPW_exist=False
+
 if __name__ == '__main__':
     font = {'family' : 'serif',
         'size'   : 29}
     matplotlib.rc('font', **font)
 
     df = pd.read_csv(sys.argv[1])
-    # df_ell = pd.read_csv(sys.argv[2])
-    # df_piece = pd.read_csv(sys.argv[3])
+    if ELL_exit:
+        df_ell = pd.read_csv(sys.argv[2])
+        ellpack_names = df_ell["Matrix"].unique()
+    if RPW_exist:
+        df_piece = pd.read_csv(sys.argv[3])
+        piece_names = df_piece["matrix_name"].unique()
     # df_piecewise = pd.read_csv(sys.argv[3])
     names = df["Matrix"].unique()
-    ellpack_names = df_ell["Matrix"].unique()
-    piece_names = df_piece["matrix_name"].unique()
+
+
     csr5_speedup = []
     mkl_speedup = []
     ellpack_speedup = []
@@ -81,21 +88,23 @@ if __name__ == '__main__':
         nnz_list.append(df_test["NNZ"].unique()[0])
         #df.loc[df["Matrix"] == name,'MKL Speedup'] = (df_test[[" SpMV MKL Parallel Executor"," SpMV Parallel Base"]].min(axis=1) / df_test[[" SpMV Vec 1_4 Parallel","SpMV DDT Parallel Executor"]].min(axis=1)).max()
         #df.loc[df["Matrix"] == name,'CSR5 Speedup'] = (df_test[["SpMVCSR5 Parallel Executor"]].min(axis=1) / df_test[[" SpMV Vec 1_4 Parallel","SpMV DDT Parallel Executor"]].min(axis=1)).max()
-    for index,name in enumerate(ellpack_names):
-        df_test = df_ell[df_ell["Matrix"] == name]
-        ellpack_speedup.append ((df_test[["ELLPACK"]].min(axis=1) / df_test[[" SpMV Vec 1_4 Parallel", "DDT MT"]].min(axis=1)).max())
-        df_test_original = df[df["Matrix"] == name]
-        ellpack_nnz_list.append(index)
-        # ellpack_nnz_list.append(df_test_original["NNZ"])
-    for index, name in enumerate(piece_names):
-        df_test_piece = df_piece[df_piece["matrix_name"] == name]
-        changed_name = '/' + name + '/' + name + '.mtx'
-        df_test = df[df["Matrix"] == changed_name]
-        piecewise_speedup.append(df_test_piece["EXECUTION_TIME"] / df_test["SpMVDDT Serial Executor"].min())
-        piecewise_nnz_list.append(index)
+    if ELL_exit:
+        for index,name in enumerate(ellpack_names):
+            df_test = df_ell[df_ell["Matrix"] == name]
+            ellpack_speedup.append ((df_test[["ELLPACK"]].min(axis=1) / df_test[[" SpMV Vec 1_4 Parallel", "DDT MT"]].min(axis=1)).max())
+            df_test_original = df[df["Matrix"] == name]
+            ellpack_nnz_list.append(index)
+            # ellpack_nnz_list.append(df_test_original["NNZ"])
+    if RPW_exist:
+        for index, name in enumerate(piece_names):
+            df_test_piece = df_piece[df_piece["matrix_name"] == name]
+            changed_name = '/' + name + '/' + name + '.mtx'
+            df_test = df[df["Matrix"] == changed_name]
+            piecewise_speedup.append(df_test_piece["EXECUTION_TIME"] / df_test["SpMVDDT Serial Executor"].min())
+            piecewise_nnz_list.append(index)
 
-    print(len(piecewise_speedup))
-    print(len(piecewise_nnz_list))
+    #print(len(piecewise_speedup))
+    #print(len(piecewise_nnz_list))
     # print(piecewise_speedup)
     # print(piecewise_nnz_list)
 
@@ -104,9 +113,9 @@ if __name__ == '__main__':
 
     slower_csr = np.sum(np.where(np.array(csr5_speedup) < 1, 1, 0))
     slower_mkl = np.sum(np.where(np.array(mkl_speedup) < 1, 1, 0))
-    print("CSR5 faster: ", slower_csr/len(csr5_speedup), "MKL faster: ", slower_mkl/len(mkl_speedup) )
-    print("CSR5 avg speedup: ", np.average(np.where(np.array(csr5_speedup)<7, csr5_speedup, 7)) )
-    print("MKL avg speedup: ", np.average(np.where(np.array(mkl_speedup)<7, mkl_speedup, 7)) )
+    #print("CSR5 faster: ", slower_csr/len(csr5_speedup), "MKL faster: ", slower_mkl/len(mkl_speedup) )
+    #print("CSR5 avg speedup: ", np.average(np.where(np.array(csr5_speedup)<7, csr5_speedup, 7)) )
+    #print("MKL avg speedup: ", np.average(np.where(np.array(mkl_speedup)<7, mkl_speedup, 7)) )
     df = df[( df[" size_cutoff"] == 1 ) & ( df[" col_threshold"] == 1 )]
     ax.scatter(nnz_list, mkl_speedup, color="black")
     ax.set_xscale('log')
@@ -141,27 +150,29 @@ if __name__ == '__main__':
     ax1.axhline(y=1.0, color='r', linestyle='-')
 
     # Ellpack Speedup
-    ax2.scatter(ellpack_nnz_list, ellpack_speedup, color="black")
-    ax2.set_ylim([0, 9.5])
-    ax2.set_xscale('log')
-    ax2.spines['right'].set_visible(False)
-    ax2.spines['top'].set_visible(False)
-    #ax2.set_xlabel("NNZ")
-    ax2.set_ylabel("LCM I/E Speedup over SPF-ELL")
-    ax2.axhline(y=1.0,color='r',linestyle='-')
-    print("SPF avg speedup: ", np.average(np.where(np.array(ellpack_speedup) < 10, ellpack_speedup, 7)))
+    if ELL_exit:
+        ax2.scatter(ellpack_nnz_list, ellpack_speedup, color="black")
+        ax2.set_ylim([0, 9.5])
+        ax2.set_xscale('log')
+        ax2.spines['right'].set_visible(False)
+        ax2.spines['top'].set_visible(False)
+        #ax2.set_xlabel("NNZ")
+        ax2.set_ylabel("LCM I/E Speedup over SPF-ELL")
+        ax2.axhline(y=1.0,color='r',linestyle='-')
+        print("SPF avg speedup: ", np.average(np.where(np.array(ellpack_speedup) < 10, ellpack_speedup, 7)))
 
     # Piecewise Speedup
-    ax3.scatter(piecewise_nnz_list, piecewise_speedup, color="black")
-    ax3.set_ylim([0, 10])
-    ax3.set_xscale('log')
-    ax3.spines['right'].set_visible(False)
-    ax3.spines['top'].set_visible(False)
-    ax3.set_xlabel("NNZ")
-    ax3.set_ylabel("LCM I/E Speedup over RPW")
-    ax3.set_yscale('log')
-    ax3.axhline(y=1.0,color='r',linestyle='-')
-    print("RPW avg speedup: ", np.average(np.where(np.array(piecewise_speedup) < 100, piecewise_speedup, 7)))
+    if RPW_exist:
+        ax3.scatter(piecewise_nnz_list, piecewise_speedup, color="black")
+        ax3.set_ylim([0, 10])
+        ax3.set_xscale('log')
+        ax3.spines['right'].set_visible(False)
+        ax3.spines['top'].set_visible(False)
+        ax3.set_xlabel("NNZ")
+        ax3.set_ylabel("LCM I/E Speedup over RPW")
+        ax3.set_yscale('log')
+        ax3.axhline(y=1.0,color='r',linestyle='-')
+        print("RPW avg speedup: ", np.average(np.where(np.array(piecewise_speedup) < 100, piecewise_speedup, 7)))
 
     for axis in ['bottom', 'left']:
         ax.spines[axis].set_linewidth(4)

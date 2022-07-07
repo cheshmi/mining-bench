@@ -72,6 +72,8 @@ B_MAT_COL=( 256 )
 ### SPMM - grp 0
 if [ "$TUNED" == 4 ]; then
   #for mat in  ${MAT_GRP0}; do
+  header=0
+  echo "Matrix,nRows,nCols,NNZ,mTileSize,nTileSize,bCols,SpMM Baseline,SpMM Parallel,SpMM Tiled Parallel,SpMM MKL,SpMM DDT,SpMM DDT Analysis"  
   for (( i=0; i<${split}; i++ )); do 
         mat=${MATS[$i]} 
         for mtile in "${M_TILE_SIZES[@]}"; do

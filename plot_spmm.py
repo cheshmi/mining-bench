@@ -6,6 +6,7 @@ from matplotlib import scale as mscale
 from matplotlib import transforms as mtransforms
 from matplotlib.ticker import FixedLocator
 import matplotlib.ticker
+import sys
 
 class SegmentedScale(mscale.ScaleBase):
     name = 'segmented'
@@ -58,7 +59,6 @@ if __name__ == '__main__':
     font = {'family' : 'serif',
         'size'   : 31}
     matplotlib.rc('font', **font)
-    # df = pd.read_csv(".logs/spmm_niagara_final.csv")
     df = pd.read_csv(sys.argv[1])
     names = df.Matrix.unique()
     #bCols = [4,16,64,256,1024]
