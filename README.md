@@ -1,5 +1,8 @@
 # mining-bench
 Artifact Description for "vectorizing sparse matrix codes using partially strided codelets" at SC22. The source code is available at [the codelet mining repository](https://github.com/sympiler/codelet_mining).
+The artifact is available as:
+[![DOI](https://zenodo.org/badge/465357427.svg)](https://zenodo.org/badge/latestdoi/465357427)
+
 
 # Quick Instruction
 * The mining-bench repository should be cloned: 
